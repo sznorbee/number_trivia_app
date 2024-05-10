@@ -1,17 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:number_trivia_app/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:number_trivia_app/features/number_trivia/domain/repositories/number_trivia_repository.dart';
 import 'package:number_trivia_app/features/number_trivia/domain/usecases/get_concrete_number_trivia.dart';
 
-// class MockNumberTriviaRepository extends Mock
-//     implements NumberTriviaRepository {}
-    
-@GenerateNiceMocks([MockSpec<NumberTriviaRepository>()])
-import './get_concrete_number_trivia_test.mocks.dart';
+class MockNumberTriviaRepository extends Mock
+    implements NumberTriviaRepository {}
 
 void main() {
   late GetConcreteNumberTrivia usecase;
@@ -27,13 +23,13 @@ void main() {
 
   test('Get trivia for the number from the repository', () async {
     // arrange
-    when(mockNumberTriviaRepository.getConcreteNumberTrivia(any))
+    when(() => mockNumberTriviaRepository.getConcreteNumberTrivia(any()))
         .thenAnswer((_) async => const Right(tNumberTrivia));
     // act
     final result = await usecase.execute(number: tNumber);
     // assert
     expect(result, const Right(tNumberTrivia));
-    verify(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
+    verify(() => mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
     verifyNoMoreInteractions(mockNumberTriviaRepository);
   });
 }
