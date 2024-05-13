@@ -6,5 +6,7 @@ https://resocoder.com/2019/08/27/flutter-tdd-clean-architecture-course-1-explana
 
 Videos.
 - 1st part: https://www.youtube.com/watch?v=KjE2IDphA_U
-- 2nd part: https://www.youtube.com/watch?v=lPkWX8xFthE
+- 2nd: https://www.youtube.com/watch?v=lPkWX8xFthE
+- 3th: https://www.youtube.com/watch?v=Mmq72a0h4jk&t=869s
+- 4th: https://www.youtube.com/watch?v=keaTZ9M_U1A
 
