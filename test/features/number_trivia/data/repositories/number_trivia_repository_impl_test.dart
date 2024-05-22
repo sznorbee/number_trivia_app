@@ -113,6 +113,33 @@ void main() {
     group('Offline device', () {
       setUp(() => when(() => mockNetworkInfo.isConnected)
           .thenAnswer((_) async => false));
+
+      test(
+        'Return last locally cached data when the cached data is present',
+        () async {
+          // arrange
+          when(() => mockLocalDataSource.getLastNumberTrivia())
+              .thenAnswer((_) async => tNumberTriviaModel);
+          // act
+          final result = await repository.getConcreteNumberTrivia(tNumber);
+          // assert
+          verifyZeroInteractions(mockRemoteDataSource);
+          verify(() => mockLocalDataSource.getLastNumberTrivia());
+          expect(result, equals(const Right(tNumberTrivia)));
+        },
+      );
+
+      test('Return CacheFailure when there is no cached data present', () async {
+        // arrange
+        when(() => mockLocalDataSource.getLastNumberTrivia())
+            .thenThrow(CacheException());
+        // act
+        final result = await repository.getConcreteNumberTrivia(tNumber);
+        // assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(() => mockLocalDataSource.getLastNumberTrivia());
+        expect(result, equals(Left(CacheFailure())));
+      });
     });
   });
 }
