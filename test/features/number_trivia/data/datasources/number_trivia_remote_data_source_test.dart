@@ -82,4 +82,49 @@ void main() {
       },
     );
   });
+
+  group('getRandomNumberTrivia', () {
+    final Uri url = Uri.parse('http://numbersapi.com/random');
+    final tNumberTriviaModel = NumberTriviaModel.fromJson(
+      json.decode(fixture('trivia.json')),
+    );
+    test(
+      'Perform a GET request on a URL without number being the endpoint and with application/json header',
+      () async {
+        // arrange
+        setUpMockHttpClientSuccess200();
+        // act
+        dataSource.getRandomNumberTrivia();
+        // assert
+        verify(() => mockHttpClient.get(
+              url,
+              headers: {'Content-Type': 'application/json'},
+            ));
+      },
+    );
+
+    test(
+      'Return NumberTrivia when the response code is 200 (success)',
+      () async {
+        // arrange
+        setUpMockHttpClientSuccess200();
+        // act
+        final result = await dataSource.getRandomNumberTrivia();
+        // assert
+        expect(result, equals(tNumberTriviaModel));
+      },
+    );
+
+    test(
+      'Throw a ServerException when the response code is 404 or other',
+      () async {
+        // arrange
+        setUpMockHttpClientFailure404();
+        // act
+        final call = dataSource.getRandomNumberTrivia;
+        // assert
+        expect(() => call(), throwsA(isA<ServerException>()));
+      },
+    );
+  });
 }
