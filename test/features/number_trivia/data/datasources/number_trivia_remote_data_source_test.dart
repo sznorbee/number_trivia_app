@@ -23,6 +23,20 @@ void main() {
     registerFallbackValue(FakeUri());
   });
 
+  void setUpMockHttpClientSuccess200() {
+    when(() => mockHttpClient.get(
+          any(),
+          headers: any(named: 'headers'),
+        )).thenAnswer((_) async => http.Response(fixture('trivia.json'), 200));
+  }
+
+  void setUpMockHttpClientFailure404() {
+    when(() => mockHttpClient.get(
+          any(),
+          headers: any(named: 'headers'),
+        )).thenAnswer((_) async => http.Response('Something went wrong', 404));
+  }
+
   group('getConcreteNumberTrivia', () {
     const tNumber = 1;
     final Uri url = Uri.parse('http://numbersapi.com/{$tNumber}');
@@ -33,12 +47,7 @@ void main() {
       'Perform a GET request on a URL with number being the endpoint and with application/json header',
       () async {
         // arrange
-        when(() => mockHttpClient.get(
-                  any(),
-                  headers: any(named: 'headers'),
-                ))
-            .thenAnswer(
-                (_) async => http.Response(fixture('trivia.json'), 200));
+        setUpMockHttpClientSuccess200();
         // act
         dataSource.getConcreteNumberTrivia(tNumber);
         // assert
@@ -53,12 +62,7 @@ void main() {
       'Return NumberTrivia when the response code is 200 (success)',
       () async {
         // arrange
-        when(() => mockHttpClient.get(
-                  any(),
-                  headers: any(named: 'headers'),
-                ))
-            .thenAnswer(
-                (_) async => http.Response(fixture('trivia.json'), 200));
+        setUpMockHttpClientSuccess200();
         // act
         final result = await dataSource.getConcreteNumberTrivia(tNumber);
         // assert
@@ -70,12 +74,7 @@ void main() {
       'Throw a ServerException when the response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(
-                  any(),
-                  headers: any(named: 'headers'),
-                ))
-            .thenAnswer(
-                (_) async => http.Response('Something went wrong', 404));
+        setUpMockHttpClientFailure404();
         // act
         final call = dataSource.getConcreteNumberTrivia;
         // assert
