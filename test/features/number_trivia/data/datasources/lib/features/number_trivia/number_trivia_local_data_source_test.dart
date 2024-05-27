@@ -51,4 +51,23 @@ void main() {
       },
     );
   });
+
+  group('cacheNumberTrivia', () {
+    const tNumberTriviaModel =
+        NumberTriviaModel(number: 1, text: 'Test Trivia');
+    test(
+      'Call SharedPreferences to cache the data',
+      () async {
+        // arrange
+        when(() => mockSharedPreferences.setString(any(), any()))
+            .thenAnswer((_) async => true);
+        // act
+        dataSource.cacheNumberTrivia(tNumberTriviaModel);
+        // assert
+        final expectedJsonString = json.encode(tNumberTriviaModel.toJson());
+        verify(() => mockSharedPreferences.setString(
+            CACHED_NUMBER_TRIVIA, expectedJsonString));
+      },
+    );
+  });
 }
