@@ -1,13 +1,11 @@
 import 'dart:convert';
-
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:number_trivia_app/core/error/exceptions.dart';
 import 'package:number_trivia_app/features/number_trivia/data/datasources/number_trivia_local_data_source.dart';
 import 'package:number_trivia_app/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../../../../../core/fixtures/fixtures_reader.dart';
+import '../../../../core/fixtures/fixtures_reader.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
 
