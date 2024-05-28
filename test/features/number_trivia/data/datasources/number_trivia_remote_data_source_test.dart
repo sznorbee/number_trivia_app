@@ -39,7 +39,7 @@ void main() {
 
   group('getConcreteNumberTrivia', () {
     const tNumber = 1;
-    final Uri url = Uri.parse('http://numbersapi.com/{$tNumber}');
+    final Uri url = Uri.parse('http://numbersapi.com/$tNumber');
     final tNumberTriviaModel = NumberTriviaModel.fromJson(
       json.decode(fixture('trivia.json')),
     );
